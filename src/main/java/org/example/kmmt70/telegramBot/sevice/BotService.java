@@ -1,7 +1,6 @@
 package org.example.kmmt70.telegramBot.sevice;
 
 import org.example.kmmt70.telegramBot.component.TelegramUpdateHandle;
-import org.example.kmmt70.telegramBot.repository.GroupRepository;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChat;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
