@@ -1,7 +1,6 @@
 package org.example.kmmt70.telegramBot.sevice;
 
 import org.example.kmmt70.telegramBot.component.TelegramUpdateHandle;
-import org.example.kmmt70.telegramBot.entity.Group;
 import org.example.kmmt70.telegramBot.repository.GroupRepository;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChat;
@@ -16,11 +15,9 @@ import java.util.*;
 public class BotService {
 
     private final TelegramUpdateHandle botConfig;
-    private final GroupRepository groupRepository;
 
-    public BotService(TelegramUpdateHandle botConfig, GroupRepository groupRepository) {
+    public BotService(TelegramUpdateHandle botConfig) {
         this.botConfig = botConfig;
-        this.groupRepository = groupRepository;
     }
 
     public StringBuilder findGroupByUser(Long userId) {
@@ -44,49 +41,5 @@ public class BotService {
         }
         else
             return new StringBuilder("User not found in any groups.");
-    }
-
-    public void handleBotAddedToGroup(Long groupId, String groupName, Long addedByUserId) {
-        Optional<Group> byGroupId = groupRepository.findFirstByGroupId(String.valueOf(groupId));
-        if (byGroupId.isPresent()) {
-            Group group = byGroupId.get();
-            group.setDeleted(false);
-            groupRepository.save(group);
-        }
-        else {
-            Group group = new Group();
-            group.setCreatedDate(LocalDateTime.now());
-            group.setUpdatedDate(LocalDateTime.now());
-            group.setGroupId(String.valueOf(groupId));
-            group.setUsername("@"+groupName);
-            group.setUserId(String.valueOf(addedByUserId));
-            group.setAddedToGroupByUser(String.valueOf(addedByUserId));
-            groupRepository.save(group);
-        }
-    }
-
-    public void handleBotRemovedFromGroup(Long groupId) {
-        Optional<Group> byGroupId = groupRepository.findFirstByGroupId(String.valueOf(groupId));
-        if (byGroupId.isPresent()) {
-            Group group = byGroupId.get();
-            group.setUpdatedDate(LocalDateTime.now());
-            group.setDeleted(true);
-            groupRepository.save(group);
-        }
-    }
-
-    private HashMap<Long, String> getAllGroupIds() {
-        List<Group> all = groupRepository.findAllByDeletedIs(false);
-        HashMap<Long, String> ids = new HashMap<>();
-        for (Group group : all) {
-            try {
-                GetChat getChat = new GetChat(group.getUsername());
-                Long chatId = botConfig.execute(getChat).getId();
-                ids.put(chatId, group.getUsername());
-            } catch (TelegramApiException e) {
-                System.err.println("Error retrieving group ID for: " + group.getUsername() + ". " + e.getMessage());
-            }
-        }
-        return ids;
     }
 }
