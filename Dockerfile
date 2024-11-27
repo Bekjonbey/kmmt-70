@@ -14,9 +14,14 @@ RUN ./mvnw clean package -DskipTests
 
 # Stage 2: Create the final Docker image using OpenJDK 19
 FROM openjdk:19-jdk
+WORKDIR /app
 VOLUME /tmp
 
 # Copy the JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
-EXPOSE 8090
+
+# Expose application and debugging ports
+EXPOSE 8090 5005
+
+# Add JVM options for remote debugging
+ENTRYPOINT ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "/app.jar"]

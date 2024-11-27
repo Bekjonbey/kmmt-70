@@ -15,6 +15,7 @@ public class BotInitializer {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(telegramBot);
+            System.out.println();
             return botsApi;
         } catch (TelegramApiException e) {
             throw new RuntimeException("Error initializing Telegram bot", e);
