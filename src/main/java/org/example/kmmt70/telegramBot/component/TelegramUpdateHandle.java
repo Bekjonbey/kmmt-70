@@ -1,6 +1,5 @@
 package org.example.kmmt70.telegramBot.component;
 
-import org.example.kmmt70.telegramBot.repository.GroupRepository;
 import org.example.kmmt70.telegramBot.sevice.BotService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -16,11 +15,9 @@ import java.util.Optional;
 public class TelegramUpdateHandle extends TelegramLongPollingBot {
 
     private final BotService botService;
-    private final GroupRepository groupRepository;
 
-    public TelegramUpdateHandle(@Lazy BotService botService, GroupRepository groupRepository) {
+    public TelegramUpdateHandle(@Lazy BotService botService) {
         this.botService = botService;
-        this.groupRepository = groupRepository;
     }
 
     @Override

@@ -19,27 +19,4 @@ public class BotService {
     public BotService(TelegramUpdateHandle botConfig) {
         this.botConfig = botConfig;
     }
-
-    public StringBuilder findGroupByUser(Long userId) {
-        StringBuilder result = new StringBuilder();
-        ArrayList<String> groupList = new ArrayList<>();
-        for (Map.Entry<Long, String> entry : getAllGroupIds().entrySet()) {
-            try {
-                ChatMember member = botConfig.execute(new GetChatMember(entry.getKey().toString(), userId));
-                if (member != null) {
-                    groupList.add(entry.getValue());
-                }
-            } catch (TelegramApiException e) {
-                // Continue to the next group if user not found
-            }
-        }
-        if (!groupList.isEmpty()) {
-            for (String s : groupList) {
-                result.append(s).append(", ");
-            }
-            return new StringBuilder("user found in these groups: " + result);
-        }
-        else
-            return new StringBuilder("User not found in any groups.");
-    }
 }
