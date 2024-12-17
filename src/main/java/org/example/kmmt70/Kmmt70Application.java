@@ -11,8 +11,6 @@ public class Kmmt70Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Kmmt70Application.class, args);
-        System.out.println("Bot token: " + System.getenv("BOT_TOKEN"));
-
     }
 
 }
