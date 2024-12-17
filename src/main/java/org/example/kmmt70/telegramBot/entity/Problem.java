@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,10 +15,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
-@Table
+@Entity
 public class Problem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,5 +34,8 @@ public class Problem {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    private Long allProductCount1;
+    private Long allProductCount2;
 
 }
